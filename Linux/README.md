@@ -1,0 +1,193 @@
+# udp packet forwarder
+
+udp packet forwarder (ipv4, ipv6)
+
+## Installation
+### Install dependencies
+- openssl and libssl-dev
+```
+sudo apt install openssl libssl-dev
+```
+
+### Install
+1. download files
+```
+git clone https://github.com/shuichiro-endo/udp-packet-forwarder.git
+```
+
+2. build
+```
+cd udp-packet-forwarder/Linux
+make
+```
+
+## Usage
+- server
+```
+Normal mode  : client -> server
+usage        : ./server -h local_server_ip(tcp) -p local_server_port(tcp) -H bind_ip(udp) -P bind_port(udp) -a target_ip(udp) -b target_port(udp) [-s (tls)] [-t forwarder tv_sec(timeout 0-3600 sec)] [-u forwarder tv_usec(timeout 0-1000000 microsec)]
+example      : ./server -h 0.0.0.0 -p 9000 -H 192.168.1.10 -P 60000 -a 192.168.1.1 -b 53
+             : ./server -h 0.0.0.0 -p 9000 -H 192.168.1.10 -P 60000 -a 192.168.1.1 -b 53 -s
+             : ./server -h 0.0.0.0 -p 9000 -H 192.168.1.10 -P 60000 -a 192.168.1.1 -b 53 -s -t 300 -u 0
+             : ./server -h :: -p 9000 -H ::1 -P 60000 -a ::1 -b 10053
+             : ./server -h fe80::xxxx:xxxx:xxxx:xxxx%eth0 -p 9000 -H fe80::xxxx:xxxx:xxxx:xxxx%eth0 -P 60000 -a fe80::xxxx:xxxx:xxxx:xxxx%eth0 -b 10053 -s
+or
+Reverse mode : client <- server
+usage        : ./server -r -h client_ip(tcp) -p client_port(tcp) -H bind_ip(udp) -P bind_port(udp) -a target_ip(udp) -b target_port(udp) [-s (tls)] [-t forwarder tv_sec(timeout 0-3600 sec)] [-u forwarder tv_usec(timeout 0-1000000 microsec)]
+example      : ./server -r -h 192.168.0.5 -p 1234 -H 192.168.1.10 -P 60000 -a 192.168.1.1 -b 53
+             : ./server -r -h 192.168.0.5 -p 1234 -H 192.168.1.10 -P 60000 -a 192.168.1.1 -b 53 -s
+             : ./server -r -h 192.168.0.5 -p 1234 -H 192.168.1.10 -P 60000 -a 192.168.1.1 -b 53 -s -t 300 -u 0
+             : ./server -r -h ::1 -p 1234 -H ::1 -P 60000 -a ::1 -b 10053
+             : ./server -r -h fe80::xxxx:xxxx:xxxx:xxxx%eth0 -p 1234 -H fe80::xxxx:xxxx:xxxx:xxxx%eth0 -P 60000 -a fe80::xxxx:xxxx:xxxx:xxxx%eth0 -b 10053 -s
+```
+
+- client
+```
+Normal mode  : client -> server
+usage        : ./client -h local_server_ip(udp) -p local_server_port(udp) -H remote_server_ip(tcp) -P remote_server_port(tcp) [-s (tls)] [-t forwarder tv_sec(timeout 0-3600 sec)] [-u forwarder tv_usec(timeout 0-1000000 microsec)]
+example      : ./client -h 0.0.0.0 -p 5000 -H 192.168.1.10 -P 9000
+             : ./client -h 0.0.0.0 -p 5000 -H 192.168.1.10 -P 9000 -s
+             : ./client -h 0.0.0.0 -p 5000 -H 192.168.1.10 -P 9000 -s -t 300 -u 0
+             : ./client -h :: -p 5000 -H ::1 -P 9000
+             : ./client -h fe80::xxxx:xxxx:xxxx:xxxx%eth0 -p 5000 -H fe80::xxxx:xxxx:xxxx:xxxx%eth0 -P 9000 -s
+or
+Reverse mode : client <- server
+usage        : ./client -r local_server_ip(udp) -p local_server_port(udp) -H local_server2_ip(tcp) -P local_server2_port(tcp) [-s (tls)] [-t forwarder tv_sec(timeout 0-3600 sec)] [-u forwarder tv_usec(timeout 0-1000000 microsec)]
+example      : ./client -r -h 0.0.0.0 -p 5000 -H 0.0.0.0 -P 1234
+             : ./client -r -h 0.0.0.0 -p 5000 -H 0.0.0.0 -P 1234 -s
+             : ./client -r -h 0.0.0.0 -p 5000 -H 0.0.0.0 -P 1234 -s -t 300 -u 0
+             : ./client -r -h :: -p 5000 -H :: -P 1234
+             : ./client -r -h fe80::xxxx:xxxx:xxxx:xxxx%eth0 -p 5000 -H fe80::xxxx:xxxx:xxxx:xxxx%eth0 -P 1234 -s
+```
+
+### Normal mode (client -> server)
+1. run my server
+```
+# no TLS
+./server -h 0.0.0.0 -p 9000 -H 192.168.1.10 -P 60000 -a 192.168.1.1 -b 53
+
+# TLS
+./server -h 0.0.0.0 -p 9000 -H 192.168.1.10 -P 60000 -a 192.168.1.1 -b 53 -s
+```
+2. run my client
+```
+# no TLS
+./client -h 0.0.0.0 -p 5000 -H 192.168.1.10 -P 9000
+
+# TLS
+./client -h 0.0.0.0 -p 5000 -H 192.168.1.10 -P 9000 -s
+```
+3. connect to my client from other udp clients
+```
+dig @127.0.0.1 -p 5000 google.com +notcp
+```
+
+### Reverse mode (client <- server)
+1. run my client
+```
+# no TLS
+./client -r -h 0.0.0.0 -p 5000 -H 0.0.0.0 -P 1234
+
+# TLS
+./client -r -h 0.0.0.0 -p 5000 -H 0.0.0.0 -P 1234 -s
+```
+2. run my server
+```
+# no TLS
+./server -r -h 192.168.0.5 -p 1234 -H 192.168.1.10 -P 60000 -a 192.168.1.1 -b 53
+
+# TLS
+./server -r -h 192.168.0.5 -p 1234 -H 192.168.1.10 -P 60000 -a 192.168.1.1 -b 53 -s
+```
+3. connect to my client from other udp clients
+```
+dig @127.0.0.1 -p 5000 google.com +notcp
+```
+
+## Notes
+### How to change server privatekey and certificate
+- server
+    1. generate server privatekey, publickey and certificate
+    ```
+    openssl ecparam -genkey -name prime256v1 -out server-key-pair.pem
+    
+    openssl ec -in server-key-pair.pem -outform PEM -out server-private.pem
+    
+    openssl ec -in server-key-pair.pem -outform PEM -pubout -out server-public.pem
+    
+    openssl req -new -sha256 -key server-key-pair.pem -out server.csr
+    openssl x509 -days 3650 -req -signkey server-private.pem < server.csr > server.crt
+    openssl x509 -text -noout -in server.crt
+    ```
+    2. copy the server privatekey and certificate
+    ```
+    cat server-private.pem | sed -e 's/^/"/g' -e 's/$/\\n"\\/g' -e 's/"-----END EC PRIVATE KEY-----\\n"\\/"-----END EC PRIVATE KEY-----\\n";/g'
+    cat server.crt | sed -e 's/^/"/g' -e 's/$/\\n"\\/g' -e 's/"-----END CERTIFICATE-----\\n"\\/"-----END CERTIFICATE-----\\n";/g'
+    ```
+    3. paste the privatekey and certificate into serverkey.h file
+    ```
+    char server_privatekey[] = "-----BEGIN EC PRIVATE KEY-----\n"\
+    "MHcCAQEEIPAB7VXkdlfWvOL1YKr+cxGLhx69g/eqUjncU1D9hkUdoAoGCCqGSM49\n"\
+    "AwEHoUQDQgAErAWMtToIcsL5fGF+DKZhMRy9m1WR3ViC7nrLokou9A/TMPr2DMz9\n"\
+    "O7kldBsGkxFXSbXcUfjk6wyrgarKndpK0A==\n"\
+    "-----END EC PRIVATE KEY-----\n";
+
+    char server_certificate[] = "-----BEGIN CERTIFICATE-----\n"\
+    "MIIBhTCCASsCFB47Pqx2Ko4ZXD5bCsGaaTP1Zjh8MAoGCCqGSM49BAMCMEUxCzAJ\n"\
+    "BgNVBAYTAkFVMRMwEQYDVQQIDApTb21lLVN0YXRlMSEwHwYDVQQKDBhJbnRlcm5l\n"\
+    "dCBXaWRnaXRzIFB0eSBMdGQwHhcNMjMwMTE1MTIwODA3WhcNMzMwMTEyMTIwODA3\n"\
+    "WjBFMQswCQYDVQQGEwJBVTETMBEGA1UECAwKU29tZS1TdGF0ZTEhMB8GA1UECgwY\n"\
+    "SW50ZXJuZXQgV2lkZ2l0cyBQdHkgTHRkMFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcD\n"\
+    "QgAErAWMtToIcsL5fGF+DKZhMRy9m1WR3ViC7nrLokou9A/TMPr2DMz9O7kldBsG\n"\
+    "kxFXSbXcUfjk6wyrgarKndpK0DAKBggqhkjOPQQDAgNIADBFAiEAqknImSukXNY+\n"\
+    "fkuuFbDFkte9mZM3Xy/ArE7kDIMt4nwCIHdlJRn0Cf18VQbpLessgklsk/gX59uo\n"\
+    "jrsksbPHQ50h\n"\
+    "-----END CERTIFICATE-----\n";
+    ```
+    4. build
+    ```
+    cd udp-packet-forwarder/Linux
+    make
+    ```
+
+- client
+    1. copy server.crt file to udp-packet-forwarder/Linux directory
+    ```
+    cp server.crt udp-packet-forwarder/Linux/server.crt
+    ```
+    2. modify client.c file (if you change the certificate filename or directory path)
+    ```
+    char server_certificate_filename[256] = "server.crt";	// server certificate file name
+    char server_certificate_file_directory_path[256] = ".";	// server certificate file directory path
+    ```
+    3. build (if you change the certificate filename or directory path)
+    ```
+    cd udp-packet-forwarder/Linux
+    make
+    ```
+
+### How to change server cipher suite (TLS1.2, TLS1.3)
+- server
+    1. select cipher suite(TLS1.2) and check
+    ```
+    openssl ciphers -v "AESGCM+ECDSA:CHACHA20+ECDSA:+AES256"
+    ```
+    2. select cipher suite(TLS1.3) [https://www.openssl.org/docs/man3.0/man3/SSL_CTX_set_ciphersuites.html](https://www.openssl.org/docs/man3.0/man3/SSL_CTX_set_ciphersuites.html)
+    ```
+    TLS_AES_128_GCM_SHA256
+    TLS_AES_256_GCM_SHA384
+    TLS_CHACHA20_POLY1305_SHA256
+    TLS_AES_128_CCM_SHA256
+    TLS_AES_128_CCM_8_SHA256
+    ```
+    3. modify server.c file
+    ```
+    char cipher_suite_tls1_2[1000] = "AESGCM+ECDSA:CHACHA20+ECDSA:+AES256";	// TLS1.2
+    char cipher_suite_tls1_3[1000] = "TLS_AES_256_GCM_SHA384:TLS_CHACHA20_POLY1305_SHA256:TLS_AES_128_GCM_SHA256";	// TLS1.3
+    ```
+    4. build
+    ```
+    cd udp-packet-forwarder/Linux
+    make
+    ```
+
