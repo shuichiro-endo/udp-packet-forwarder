@@ -293,12 +293,17 @@ char *get_ipv6_addr_string(const char *addr)
 {
 	char *percent = NULL;
 	char *addr2 = calloc(INET6_ADDRSTRLEN+1, sizeof(char));
+	unsigned int length = strlen(addr);
 	
 	percent = strstr(addr, "%");	// separator
 	if(percent != NULL){
 		memcpy(addr2, addr, percent-addr);
 	}else{
-		memcpy(addr2, addr, strlen(addr));
+		if(length <= INET6_ADDRSTRLEN){
+			memcpy(addr2, addr, length);
+		}else{
+			memcpy(addr2, addr, INET6_ADDRSTRLEN);
+		}
 	}
 	
 #ifdef _DEBUG
@@ -349,7 +354,6 @@ unsigned int get_ipv6_scope_id(const char *addr)
 int check_ip(const char *addr)
 {
 	char *colon = NULL;
-	char *percent = NULL;
 	char buffer[16];
 	bzero(&buffer, 16);
 	char *addr2 = NULL;
@@ -479,7 +483,6 @@ int main(int argc, char **argv)
 	char *ipv6_addr_string = NULL;
 	char *interface_name = NULL;
 	unsigned int scope_id = 0;
-	int reuse = 1;
 	int flags = 0;
 	int err = 0;
 	int ret = 0;

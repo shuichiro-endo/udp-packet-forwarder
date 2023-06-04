@@ -1,4 +1,4 @@
-# udp packet forwarder
+# udp packet forwarder (Linux)
 
 udp packet forwarder (ipv4, ipv6)
 
