@@ -499,6 +499,12 @@ int main(int argc, char **argv)
 		if(ret == 4){	// ipv4
 			// create socket
 			remote_server_sock = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
+			if(remote_server_sock == -1){
+#ifdef _DEBUG
+				printf("[E] socket error\n");
+#endif
+				return -1;
+			}
 		
 			memset((char *)&remote_server_addr, 0, sizeof(struct sockaddr_in));
 			remote_server_addr.sin_family = AF_INET;
@@ -528,6 +534,12 @@ int main(int argc, char **argv)
 		}else if(ret == 6){	// ipv6
 			// create socket
 			remote_server_sock = socket(AF_INET6, SOCK_STREAM, IPPROTO_TCP);
+			if(remote_server_sock == -1){
+#ifdef _DEBUG
+				printf("[E] socket error\n");
+#endif
+				return -1;
+			}
 			
 			ipv6_addr_string = get_ipv6_addr_string(remote_server_ip);
 			scope_id = get_ipv6_scope_id(remote_server_ip);
@@ -640,6 +652,14 @@ int main(int argc, char **argv)
 		if(ret == 4){	// ipv4
 			// create socket
 			local_server_sock = socket(AF_INET, SOCK_DGRAM, IPPROTO_UDP);
+			if(local_server_sock == -1){
+#ifdef _DEBUG
+				printf("[E] socket error\n");
+#endif
+				fini_ssl(&ssl_param);
+				close(remote_server_sock);
+				return -1;
+			}
 			
 			memset((char *)&local_server_addr, 0, sizeof(struct sockaddr_in));
 			local_server_addr_length = sizeof(struct sockaddr_in);
@@ -673,6 +693,14 @@ int main(int argc, char **argv)
 		}else if(ret == 6){	// ipv6
 			// create socket
 			local_server_sock = socket(AF_INET6, SOCK_DGRAM, IPPROTO_UDP);
+			if(local_server_sock == -1){
+#ifdef _DEBUG
+				printf("[E] socket error\n");
+#endif
+				fini_ssl(&ssl_param);
+				close(remote_server_sock);
+				return -1;
+			}
 			
 			ipv6_addr_string = get_ipv6_addr_string(local_server_ip);
 			scope_id = get_ipv6_scope_id(local_server_ip);
@@ -765,6 +793,12 @@ int main(int argc, char **argv)
 		if(ret == 4){	// ipv4
 			// create socket
 			local_server2_sock = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
+			if(local_server2_sock == -1){
+#ifdef _DEBUG
+				printf("[E] socket error\n");
+#endif
+				return -1;
+			}
 			
 			memset((char *)&local_server2_addr, 0, sizeof(struct sockaddr_in));
 			local_server2_addr.sin_family = AF_INET;
@@ -805,6 +839,12 @@ int main(int argc, char **argv)
 		}else if(ret == 6){	// ipv6
 			// create socket
 			local_server2_sock = socket(AF_INET6, SOCK_STREAM, IPPROTO_TCP);
+			if(local_server2_sock == -1){
+#ifdef _DEBUG
+				printf("[E] socket error\n");
+#endif
+				return -1;
+			}
 			
 			ipv6_addr_string = get_ipv6_addr_string(local_server2_ip);
 			scope_id = get_ipv6_scope_id(local_server2_ip);
@@ -939,6 +979,15 @@ int main(int argc, char **argv)
 		if(ret == 4){	// ipv4
 			// create socket
 			local_server_sock = socket(AF_INET, SOCK_DGRAM, IPPROTO_UDP);
+			if(local_server_sock == -1){
+#ifdef _DEBUG
+				printf("[E] socket error\n");
+#endif
+				fini_ssl(&ssl_param);
+				close(remote_server_sock);
+				close(local_server2_sock);
+				return -1;
+			}
 			
 			memset((char *)&local_server_addr, 0, sizeof(struct sockaddr_in));
 			local_server_addr_length = sizeof(struct sockaddr_in);
@@ -974,6 +1023,15 @@ int main(int argc, char **argv)
 		}else if(ret == 6){	// ipv6
 			// create socket
 			local_server_sock = socket(AF_INET6, SOCK_DGRAM, IPPROTO_UDP);
+			if(local_server_sock == -1){
+#ifdef _DEBUG
+				printf("[E] socket error\n");
+#endif
+				fini_ssl(&ssl_param);
+				close(remote_server_sock);
+				close(local_server2_sock);
+				return -1;
+			}
 			
 			ipv6_addr_string = get_ipv6_addr_string(local_server_ip);
 			scope_id = get_ipv6_scope_id(local_server_ip);
