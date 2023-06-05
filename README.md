@@ -2,6 +2,8 @@
 
 udp packet forwarder (ipv4, ipv6)
 
+This tool does not forward icmp and icmpv6 packets (Port unreachable, etc.).
+
 ## How it works
 ### Normal mode (client -> server)
 ```mermaid
