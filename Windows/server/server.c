@@ -436,6 +436,7 @@ void usage(char *filename)
 	printf("             : %s -h 0.0.0.0 -p 9000 -H 192.168.1.10 -P 60000 -a 192.168.1.1 -b 53 -s -t 300 -u 0\n", filename);
 	printf("             : %s -h :: -p 9000 -H ::1 -P 60000 -a ::1 -b 10053\n", filename);
 	printf("             : %s -h fe80::xxxx:xxxx:xxxx:xxxx%%10 -p 9000 -H fe80::xxxx:xxxx:xxxx:xxxx%%10 -P 60000 -a fe80::xxxx:xxxx:xxxx:xxxx%%10 -b 10053 -s\n", filename);
+	printf("             : %s -h 0.0.0.0 -p 9000 -H 2001:xxxx:xxxx:xxxx:xxxx:xxxx:xxxx:xxxx -P 60000 -a 2001:xxxx:xxxx:xxxx:xxxx:xxxx:xxxx:xxxx -b 53 -s\n", filename);
 	printf("or\n");
 	printf("Reverse mode : client <- server\n");
 	printf("usage        : %s -r -h client_ip(tcp) -p client_port(tcp) -H bind_ip(udp) -P bind_port(udp) -a target_ip(udp) -b target_port(udp) [-s (tls)] [-t forwarder tv_sec(timeout 0-3600 sec)] [-u forwarder tv_usec(timeout 0-1000000 microsec)]\n", filename);
@@ -444,6 +445,7 @@ void usage(char *filename)
 	printf("             : %s -r -h 192.168.0.5 -p 1234 -H 192.168.1.10 -P 60000 -a 192.168.1.1 -b 53 -s -t 300 -u 0\n", filename);
 	printf("             : %s -r -h ::1 -p 1234 -H ::1 -P 60000 -a ::1 -b 10053\n", filename);
 	printf("             : %s -r -h fe80::xxxx:xxxx:xxxx:xxxx%%10 -p 1234 -H fe80::xxxx:xxxx:xxxx:xxxx%%10 -P 60000 -a fe80::xxxx:xxxx:xxxx:xxxx%%10 -b 10053 -s\n", filename);
+	printf("             : %s -r -h 192.168.0.5 -p 1234 -H 2001:xxxx:xxxx:xxxx:xxxx:xxxx:xxxx:xxxx -P 60000 -a 2001:xxxx:xxxx:xxxx:xxxx:xxxx:xxxx:xxxx -b 53 -s\n", filename);
 }
 
 

@@ -31,6 +31,7 @@ example      : ./server -h 0.0.0.0 -p 9000 -H 192.168.1.10 -P 60000 -a 192.168.1
              : ./server -h 0.0.0.0 -p 9000 -H 192.168.1.10 -P 60000 -a 192.168.1.1 -b 53 -s -t 300 -u 0
              : ./server -h :: -p 9000 -H ::1 -P 60000 -a ::1 -b 10053
              : ./server -h fe80::xxxx:xxxx:xxxx:xxxx%eth0 -p 9000 -H fe80::xxxx:xxxx:xxxx:xxxx%eth0 -P 60000 -a fe80::xxxx:xxxx:xxxx:xxxx%eth0 -b 10053 -s
+             : ./server -h 0.0.0.0 -p 9000 -H 2001:xxxx:xxxx:xxxx:xxxx:xxxx:xxxx:xxxx -P 60000 -a 2001:xxxx:xxxx:xxxx:xxxx:xxxx:xxxx:xxxx -b 53 -s
 or
 Reverse mode : client <- server
 usage        : ./server -r -h client_ip(tcp) -p client_port(tcp) -H bind_ip(udp) -P bind_port(udp) -a target_ip(udp) -b target_port(udp) [-s (tls)] [-t forwarder tv_sec(timeout 0-3600 sec)] [-u forwarder tv_usec(timeout 0-1000000 microsec)]
@@ -39,6 +40,7 @@ example      : ./server -r -h 192.168.0.5 -p 1234 -H 192.168.1.10 -P 60000 -a 19
              : ./server -r -h 192.168.0.5 -p 1234 -H 192.168.1.10 -P 60000 -a 192.168.1.1 -b 53 -s -t 300 -u 0
              : ./server -r -h ::1 -p 1234 -H ::1 -P 60000 -a ::1 -b 10053
              : ./server -r -h fe80::xxxx:xxxx:xxxx:xxxx%eth0 -p 1234 -H fe80::xxxx:xxxx:xxxx:xxxx%eth0 -P 60000 -a fe80::xxxx:xxxx:xxxx:xxxx%eth0 -b 10053 -s
+             : ./server -r -h 192.168.0.5 -p 1234 -H 2001:xxxx:xxxx:xxxx:xxxx:xxxx:xxxx:xxxx -P 60000 -a 2001:xxxx:xxxx:xxxx:xxxx:xxxx:xxxx:xxxx -b 53 -s
 ```
 
 - client
@@ -50,6 +52,7 @@ example      : ./client -h 0.0.0.0 -p 5000 -H 192.168.1.10 -P 9000
              : ./client -h 0.0.0.0 -p 5000 -H 192.168.1.10 -P 9000 -s -t 300 -u 0
              : ./client -h :: -p 5000 -H ::1 -P 9000
              : ./client -h fe80::xxxx:xxxx:xxxx:xxxx%eth0 -p 5000 -H fe80::xxxx:xxxx:xxxx:xxxx%eth0 -P 9000 -s
+             : ./client -h fe80::xxxx:xxxx:xxxx:xxxx%eth0 -p 5000 -H 192.168.1.10 -P 9000 -s
 or
 Reverse mode : client <- server
 usage        : ./client -r local_server_ip(udp) -p local_server_port(udp) -H local_server2_ip(tcp) -P local_server2_port(tcp) [-s (tls)] [-t forwarder tv_sec(timeout 0-3600 sec)] [-u forwarder tv_usec(timeout 0-1000000 microsec)]
@@ -58,6 +61,7 @@ example      : ./client -r -h 0.0.0.0 -p 5000 -H 0.0.0.0 -P 1234
              : ./client -r -h 0.0.0.0 -p 5000 -H 0.0.0.0 -P 1234 -s -t 300 -u 0
              : ./client -r -h :: -p 5000 -H :: -P 1234
              : ./client -r -h fe80::xxxx:xxxx:xxxx:xxxx%eth0 -p 5000 -H fe80::xxxx:xxxx:xxxx:xxxx%eth0 -P 1234 -s
+             : ./client -r -h fe80::xxxx:xxxx:xxxx:xxxx%eth0 -p 5000 -H 0.0.0.0 -P 1234 -s
 ```
 
 ### Normal mode (client -> server)

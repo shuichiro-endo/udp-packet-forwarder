@@ -60,6 +60,7 @@ example      : server.exe -h 0.0.0.0 -p 9000 -H 192.168.1.10 -P 60000 -a 192.168
              : server.exe -h 0.0.0.0 -p 9000 -H 192.168.1.10 -P 60000 -a 192.168.1.1 -b 53 -s -t 300 -u 0
              : server.exe -h :: -p 9000 -H ::1 -P 60000 -a ::1 -b 10053
              : server.exe -h fe80::xxxx:xxxx:xxxx:xxxx%10 -p 9000 -H fe80::xxxx:xxxx:xxxx:xxxx%10 -P 60000 -a fe80::xxxx:xxxx:xxxx:xxxx%10 -b 10053 -s
+             : server.exe -h 0.0.0.0 -p 9000 -H 2001:xxxx:xxxx:xxxx:xxxx:xxxx:xxxx:xxxx -P 60000 -a 2001:xxxx:xxxx:xxxx:xxxx:xxxx:xxxx:xxxx -b 53 -s
 or
 Reverse mode : client <- server
 usage        : server.exe -r -h client_ip(tcp) -p client_port(tcp) -H bind_ip(udp) -P bind_port(udp) -a target_ip(udp) -b target_port(udp) [-s (tls)] [-t forwarder tv_sec(timeout 0-3600 sec)] [-u forwarder tv_usec(timeout 0-1000000 microsec)]
@@ -68,6 +69,7 @@ example      : server.exe -r -h 192.168.0.5 -p 1234 -H 192.168.1.10 -P 60000 -a 
              : server.exe -r -h 192.168.0.5 -p 1234 -H 192.168.1.10 -P 60000 -a 192.168.1.1 -b 53 -s -t 300 -u 0
              : server.exe -r -h ::1 -p 1234 -H ::1 -P 60000 -a ::1 -b 10053
              : server.exe -r -h fe80::xxxx:xxxx:xxxx:xxxx%10 -p 1234 -H fe80::xxxx:xxxx:xxxx:xxxx%10 -P 60000 -a fe80::xxxx:xxxx:xxxx:xxxx%10 -b 10053 -s
+             : server.exe -r -h 192.168.0.5 -p 1234 -H 2001:xxxx:xxxx:xxxx:xxxx:xxxx:xxxx:xxxx -P 60000 -a 2001:xxxx:xxxx:xxxx:xxxx:xxxx:xxxx:xxxx -b 53 -s
 ```
 
 - client
@@ -79,6 +81,7 @@ example      : client.exe -h 0.0.0.0 -p 5000 -H 192.168.1.10 -P 9000
              : client.exe -h 0.0.0.0 -p 5000 -H 192.168.1.10 -P 9000 -s -t 300 -u 0
              : client.exe -h :: -p 5000 -H ::1 -P 9000
              : client.exe -h fe80::xxxx:xxxx:xxxx:xxxx%10 -p 5000 -H fe80::xxxx:xxxx:xxxx:xxxx%10 -P 9000 -s
+             : client.exe -h fe80::xxxx:xxxx:xxxx:xxxx%10 -p 5000 -H 192.168.1.10 -P 9000 -s
 or
 Reverse mode : client <- server
 usage        : client.exe -r local_server_ip(udp) -p local_server_port(udp) -H local_server2_ip(tcp) -P local_server2_port(tcp) [-s (tls)] [-t forwarder tv_sec(timeout 0-3600 sec)] [-u forwarder tv_usec(timeout 0-1000000 microsec)]
@@ -87,6 +90,7 @@ example      : client.exe -r -h 0.0.0.0 -p 5000 -H 0.0.0.0 -P 1234
              : client.exe -r -h 0.0.0.0 -p 5000 -H 0.0.0.0 -P 1234 -s -t 300 -u 0
              : client.exe -r -h :: -p 5000 -H :: -P 1234
              : client.exe -r -h fe80::xxxx:xxxx:xxxx:xxxx%10 -p 5000 -H fe80::xxxx:xxxx:xxxx:xxxx%10 -P 1234 -s
+             : client.exe -r -h fe80::xxxx:xxxx:xxxx:xxxx%10 -p 5000 -H 0.0.0.0 -P 1234 -s
 ```
 
 ### Normal mode (client -> server)

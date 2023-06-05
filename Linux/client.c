@@ -376,6 +376,7 @@ void usage(char *filename)
 	printf("             : %s -h 0.0.0.0 -p 5000 -H 192.168.1.10 -P 9000 -s -t 300 -u 0\n", filename);
 	printf("             : %s -h :: -p 5000 -H ::1 -P 9000\n", filename);
 	printf("             : %s -h fe80::xxxx:xxxx:xxxx:xxxx%%eth0 -p 5000 -H fe80::xxxx:xxxx:xxxx:xxxx%%eth0 -P 9000 -s\n", filename);
+	printf("             : %s -h fe80::xxxx:xxxx:xxxx:xxxx%%eth0 -p 5000 -H 192.168.1.10 -P 9000 -s\n", filename);
 	printf("or\n");
 	printf("Reverse mode : client <- server\n");
 	printf("usage        : %s -r local_server_ip(udp) -p local_server_port(udp) -H local_server2_ip(tcp) -P local_server2_port(tcp) [-s (tls)] [-t forwarder tv_sec(timeout 0-3600 sec)] [-u forwarder tv_usec(timeout 0-1000000 microsec)]\n", filename);
@@ -384,6 +385,7 @@ void usage(char *filename)
 	printf("             : %s -r -h 0.0.0.0 -p 5000 -H 0.0.0.0 -P 1234 -s -t 300 -u 0\n", filename);
 	printf("             : %s -r -h :: -p 5000 -H :: -P 1234\n", filename);
 	printf("             : %s -r -h fe80::xxxx:xxxx:xxxx:xxxx%%eth0 -p 5000 -H fe80::xxxx:xxxx:xxxx:xxxx%%eth0 -P 1234 -s\n", filename);
+	printf("             : %s -r -h fe80::xxxx:xxxx:xxxx:xxxx%%eth0 -p 5000 -H 0.0.0.0 -P 1234 -s\n", filename);
 }
 
 
